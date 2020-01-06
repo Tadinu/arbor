@@ -1,7 +1,10 @@
 # Niels Lohmann's json library (single-header version).
 
 add_library(ext-json INTERFACE)
-target_include_directories(ext-json INTERFACE json/single_include)
+target_include_directories(ext-json INTERFACE 
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/json/single_include>
+        $<INSTALL_INTERFACE:include/json/single_include>
+)
 
 # tinyopt command line parsing libary (header-only).
 
@@ -61,3 +64,14 @@ add_target_if(rtdtheme_avail
 add_library(ext-sphinx_rtd_theme INTERFACE)
 add_dependencies(ext-sphinx_rtd_theme check-sphinx_rtd_theme)
 target_include_directories(ext-sphinx_rtd_theme INTERFACE sphinx_rtd_theme)
+
+install(DIRECTORY json/single_include/nlohmann
+	DESTINATION include/json/single_include
+        FILES_MATCHING PATTERN "*.hpp")
+
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+foreach(dir ${dirs})
+  message(STATUS "dir='${dir}'")
+endforeach()
+
+install(TARGETS ext-json EXPORT arbor-targets)
