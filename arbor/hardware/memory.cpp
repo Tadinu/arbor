@@ -1,3 +1,4 @@
+#include <cstddef>
 #include "memory.hpp"
 
 #ifdef __linux__
